@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace SmartCardsService.Features
 {
-	internal enum ServiceTypeEnum { Primary = 0, Replicator };
+	internal enum ServiceTypeEnum { Primary = 1, Replicator };
 	internal class Replication
 	{
 		private static ServiceTypeEnum serviceType;

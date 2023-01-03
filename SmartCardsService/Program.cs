@@ -15,22 +15,23 @@ namespace SmartCardsService
 	{
 		static void Main(string[] args)
 		{
-			WCFManager wcfManager;
 			Replication replication = new Replication();
 
 			replication.SetServiceType();
 
-			wcfManager = new WCFManager(Replication.ServiceType == ServiceTypeEnum.Primary ? 5000 : 5001);
-			wcfManager.OpenSCServiceHost();
+			WCFManager.ServicePort = Replication.ServiceType == ServiceTypeEnum.Primary ? 5000 : 5001;
+			WCFManager.OpenSCServiceHost();
+			WCFManager.OpenReplicatorServiceHost();
 
-			ShutDown(wcfManager);
+			ShutDown();
 		}
 
-		static void ShutDown(WCFManager wcfManager)
+		static void ShutDown()
 		{
 			Console.WriteLine("Press any key to exit shutdown the server...");
 			Console.ReadKey();
-			wcfManager.CloseSCServiceHost();
+			WCFManager.CloseSCServiceHost();
+			WCFManager.CloseReplicatorProxy();
 		}
 	}
 }

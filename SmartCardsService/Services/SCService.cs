@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using SCSCommon.Services;
+using SmartCardsService.Connections;
 using SmartCardsService.Features;
 using SmartCardsService.Models;
 
@@ -15,6 +16,11 @@ namespace SmartCardsService.Services
 
 		public bool CreateSmartCard(User user)
 		{
+			if (WCFManager.ReplicatorProxy == null)
+				WCFManager.CreateReplicatorProxy();
+
+			WCFManager.ReplicatorProxy.ReplicateUserRegistration(user);
+
 			return UserManager.RegisterNewUser(user);
 		}
 	}
