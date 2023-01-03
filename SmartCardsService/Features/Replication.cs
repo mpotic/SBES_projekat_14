@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace SmartCardsService.Features
 {
-	internal enum ServiceTypeEnum { Primary = 1, Replicator };
+	internal enum ServiceTypeEnum { Primary = 0, Secondary };
 	internal class Replication
 	{
 		private static ServiceTypeEnum serviceType;
@@ -16,13 +16,13 @@ namespace SmartCardsService.Features
 
 		internal bool SetServiceType()
 		{
-			int type = 0;
+			int type = -1;
 			
-			Console.Write("Enter 1 to start the service as a primary service or press 2 so start the service as a replicator: ");
+			Console.Write("Enter 0 to start the service as primary or press 1 so start the service as secondary: ");
 			
-			while(!int.TryParse(Console.ReadLine(), out type) || (type != 1 && type != 2))
+			while(!int.TryParse(Console.ReadLine(), out type) || (type != 0 && type != 1))
 			{
-				Console.WriteLine("Enter only 1 or 2: ");
+				Console.WriteLine("Enter only 0 or 1: ");
 			}
 
 			ServiceType = (ServiceTypeEnum)type;

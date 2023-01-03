@@ -1,4 +1,5 @@
-﻿using SmartCardsService.Features;
+﻿using CustomLogger;
+using SmartCardsService.Features;
 using SmartCardsService.Models;
 using System;
 using System.Collections.Generic;
@@ -13,7 +14,24 @@ namespace SmartCardsService.Services
 		private UserManager UserManager { get; set; } = new UserManager();
 		public bool ReplicateUserRegistration(User user)
 		{
-			return UserManager.RegisterNewUser(user);
+			bool status = UserManager.RegisterNewUser(user);
+			if (status)
+				Audit.ReplicationSuccess("ReplicatorService/" + Replication.ServiceType.ToString(), user.SubjectName);
+			else
+				Audit.ReplicationSuccess("ReplicatorService/" + Replication.ServiceType.ToString(), user.SubjectName);
+
+			return status;
+		}
+
+		public bool ReplicateUserUpdatePin(User user)
+		{
+			bool status =  UserManager.ChangeUserPin(user);
+			if (status)
+				Audit.PinReplicationSuccess("ReplicatorService/" + Replication.ServiceType.ToString(), user.SubjectName);
+			else
+				Audit.PinReplicationSuccess("ReplicatorService/" + Replication.ServiceType.ToString(), user.SubjectName);
+
+			return status;
 		}
 	}
 }

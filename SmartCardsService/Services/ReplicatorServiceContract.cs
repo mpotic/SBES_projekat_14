@@ -13,5 +13,7 @@ namespace SmartCardsService.Services
 	{
 		[OperationContract]
 		bool ReplicateUserRegistration(User user);
+		[OperationContract]
+		bool ReplicateUserUpdatePin(User user);
 	}
 }

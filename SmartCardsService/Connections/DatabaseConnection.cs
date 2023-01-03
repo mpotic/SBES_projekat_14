@@ -21,7 +21,7 @@ namespace SmartCardsService.Connections
 				if(connection == null)
 					connection = new SqlConnection(ConnectionString);
 
-				if(connection.State != ConnectionState.Open)
+				if(connection.State == ConnectionState.Closed)
 					connection.Open();
 			}
 			catch(Exception e)
@@ -33,11 +33,16 @@ namespace SmartCardsService.Connections
 		
 		public void CloseConnection()
 		{
-			if (connection != null && connection.State != ConnectionState.Closed)
+			if (connection != null && connection.State == ConnectionState.Open)
 			{ 
 				connection.Close();
-				connection.Dispose();
 			}
+		}
+
+		~DatabaseConnection()
+		{
+			if(connection != null)
+				connection.Dispose();
 		}
 	}
 }

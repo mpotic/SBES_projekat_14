@@ -44,7 +44,37 @@ namespace Client.SCSService
 				return false;
 			}
 
-			return Connection.ScsProxy.CreateSmartCard(new User(subjectName, pin, organizationalUnit));
+			return Connection.ScsProxy.CreateSmartCard(new User(subjectName, pin, organizationalUnit, ""));
+		}
+
+		internal bool ChangeUserPin()
+		{
+			Console.WriteLine("SubjectName:\t");
+			string subjectName = Console.ReadLine();
+			if (subjectName.Trim().Length > 30 || subjectName.Trim().Length < 1)
+			{
+				Console.WriteLine("Name has invalid length!");
+				return false;
+			}
+			subjectName = subjectName.Trim();
+
+			Console.WriteLine("Current Pin (4-digit):\t");
+			string pin = Console.ReadLine().Trim();
+			if (pin.Length != 4)
+			{
+				Console.WriteLine("Wrong pin number!");
+				return false;
+			}
+
+			Console.WriteLine("New Pin (4-digit):\t");
+			string newPin = Console.ReadLine().Trim();
+			if (pin.Length != 4)
+			{
+				Console.WriteLine("Wrong pin number!");
+				return false;
+			}
+
+			return Connection.ScsProxy.ChangePin(new User(subjectName, pin, "", newPin));
 		}
 	}
 }

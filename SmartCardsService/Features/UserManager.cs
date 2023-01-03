@@ -11,16 +11,41 @@ namespace SmartCardsService.Features
 {
 	internal class UserManager
 	{
-		internal bool RegisterNewUser(User user)
+		private string MakeHash(string value)
 		{
 			string hash = "";
-			foreach (byte b in SHA256.Create().ComputeHash(Encoding.ASCII.GetBytes(user.Pin)))
+			foreach (byte b in SHA256.Create().ComputeHash(Encoding.ASCII.GetBytes(value)))
 			{
 				hash += $"{b:X2}";
 			}
-			user.Pin = hash;
+
+			return hash;
+		}
+		internal bool RegisterNewUser(User user)
+		{
+			user.Pin = this.MakeHash(user.Pin);
 
 			return DatabaseCRUD.InsertNewUser(user);
+		}
+
+		internal bool CheckPinValidity(User user)
+		{
+
+			user.Pin = this.MakeHash(user.Pin);
+
+			return DatabaseCRUD.ExistsUserWithPin(user);
+		}
+
+		internal bool ChangeUserPin(User user)
+		{
+			if (this.CheckPinValidity(user))
+			{
+				user.NewPin = this.MakeHash(user.NewPin);
+				return DatabaseCRUD.UpdateUserPin(user);
+			}
+				
+
+			return false;
 		}
 	}
 }

@@ -16,14 +16,25 @@ namespace SmartCardsService.Models
 		string pin;
 		[DataMember]
 		string organizationalUnit;
-		public User(string subjectName, string pin, string organizationalUnit)
+		[DataMember]
+		string newPin;
+		public User(string subjectName, string pin, string organizationalUnit, string newPin)
 		{
 			SubjectName = subjectName;
 			Pin = pin;
 			OrganizationalUnit = organizationalUnit;
+			NewPin = newPin;
+		}
+		public User(User user)
+		{
+			SubjectName = user.SubjectName;
+			Pin = user.Pin;
+			OrganizationalUnit = user.OrganizationalUnit;
+			NewPin = user.NewPin;
 		}
 		public string SubjectName { get => subjectName; set => subjectName = value; }
 		public string Pin { get => pin; set => pin = value; }
 		public string OrganizationalUnit { get => organizationalUnit; set => organizationalUnit = value; }
+		public string NewPin { get => newPin; set => newPin = value; }
 	}
 }

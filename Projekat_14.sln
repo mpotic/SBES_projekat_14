@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Client", "Client\Client.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SCSCommon", "SCSCommon\SCSCommon.csproj", "{AE9162C8-CC11-477A-B43D-284A2B2470F4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomLogger", "CustomLogger\CustomLogger.csproj", "{B5032111-4244-4A5D-98E0-3273DB202E08}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{AE9162C8-CC11-477A-B43D-284A2B2470F4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AE9162C8-CC11-477A-B43D-284A2B2470F4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AE9162C8-CC11-477A-B43D-284A2B2470F4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B5032111-4244-4A5D-98E0-3273DB202E08}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B5032111-4244-4A5D-98E0-3273DB202E08}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B5032111-4244-4A5D-98E0-3273DB202E08}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B5032111-4244-4A5D-98E0-3273DB202E08}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

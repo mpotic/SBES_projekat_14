@@ -13,26 +13,42 @@ namespace SmartCardsService.Connections
 	{
 		private static int servicePort;
 		private static ServiceHost scServiceHost;
-		private static ServiceHost validationServiceHost;
 		private static ServiceHost replicatorServiceHost;
+		private static ServiceHost validationServiceHost;
 		private static ChannelFactory<ReplicatorServiceContract> factory;
 		private static ReplicatorServiceContract replicatorProxy;
 
 		internal static int ServicePort { get => servicePort; set => servicePort = value; }
-		internal static ServiceHost SCServiceHost { get => scServiceHost; set => scServiceHost = value; }
+		public static ServiceHost SCServiceHost { get => scServiceHost; set => scServiceHost = value; }
+		public static ServiceHost ReplicatorServiceHost { get => replicatorServiceHost; set => replicatorServiceHost = value; }
 		internal static ServiceHost ValidationServiceHost { get => validationServiceHost; set => validationServiceHost = value; }
-		internal static ServiceHost ReplicatorServiceHost { get => replicatorServiceHost; set => replicatorServiceHost = value; }
-		internal static ReplicatorServiceContract ReplicatorProxy { get => replicatorProxy; set => replicatorProxy = value; }
+
+		internal static ReplicatorServiceContract ReplicatorProxy
+		{
+			get
+			{
+				if (replicatorProxy == null)
+					WCFManager.CreateReplicatorProxy();
+				return replicatorProxy;
+			}
+			set => replicatorProxy = value;
+		}
 
 		internal static bool OpenSCServiceHost()
 		{
 			try
 			{
 				SCServiceHost = new ServiceHost(typeof(SCService));
+
+				NetTcpBinding binding = new NetTcpBinding();
+				binding.Security.Mode = SecurityMode.Transport;
+				binding.Security.Transport.ClientCredentialType = TcpClientCredentialType.Windows;
+				binding.Security.Transport.ProtectionLevel = System.Net.Security.ProtectionLevel.EncryptAndSign;
+
 				SCServiceHost.AddServiceEndpoint(typeof(SCServiceContract),
-					new NetTcpBinding(), $"net.tcp://localhost:{ServicePort}/SCService");
+					binding, $"net.tcp://localhost:{ServicePort}/SCService");
 				SCServiceHost.Open();
-				Console.WriteLine($"SmartCardService host ready as \"net.tcp://localhost:{ServicePort}/SCService\"!");
+				Console.WriteLine($"SmartCardService host ready at \"net.tcp://localhost:{ServicePort}/SCService\"!");
 			}
 			catch (Exception e)
 			{
@@ -45,16 +61,16 @@ namespace SmartCardsService.Connections
 		internal static bool CloseSCServiceHost()
 		{
 			try
-			{ 
+			{
 				SCServiceHost.Close();
 				Console.WriteLine("SmartCardService host closed!");
 			}
-			catch(Exception e)
+			catch (Exception e)
 			{
 				Console.WriteLine("ERROR while trying to close SmartCardsService host: " + e.Message);
 				return false;
 			}
-			
+
 			return true;
 		}
 
@@ -63,14 +79,20 @@ namespace SmartCardsService.Connections
 			try
 			{
 				ReplicatorServiceHost = new ServiceHost(typeof(ReplicatorService));
+
+				NetTcpBinding binding = new NetTcpBinding();
+				binding.Security.Mode = SecurityMode.Transport;
+				binding.Security.Transport.ClientCredentialType = TcpClientCredentialType.Windows;
+				binding.Security.Transport.ProtectionLevel = System.Net.Security.ProtectionLevel.EncryptAndSign;
+
 				ReplicatorServiceHost.AddServiceEndpoint(typeof(ReplicatorServiceContract),
-					new NetTcpBinding(), $"net.tcp://localhost:{ServicePort}/Replicator");
+					binding, $"net.tcp://localhost:{ServicePort}/ReplicatorService");
 				ReplicatorServiceHost.Open();
-				Console.WriteLine($"SmartCardService host ready as \"net.tcp://localhost:{ServicePort}/Replicator\"!");
+				Console.WriteLine($"ReplicatorService host ready at \"net.tcp://localhost:{ServicePort}/ReplicatorService\"!");
 			}
 			catch (Exception e)
 			{
-				Console.WriteLine($"ERROR while trying to open host at \"net.tcp://localhost:{ServicePort}/Replicator\" endpoint: {e.Message}");
+				Console.WriteLine($"ERROR while trying to open host at \"net.tcp://localhost:{ServicePort}/ReplicatorService\" endpoint: {e.Message}");
 				return false;
 			}
 			return true;
@@ -79,7 +101,7 @@ namespace SmartCardsService.Connections
 		{
 			try
 			{
-				SCServiceHost.Close();
+				ReplicatorServiceHost.Close();
 				Console.WriteLine("ReplicatorService host closed!");
 			}
 			catch (Exception e)
@@ -96,14 +118,21 @@ namespace SmartCardsService.Connections
 			try
 			{
 				NetTcpBinding binding = new NetTcpBinding();
+				binding.Security.Mode = SecurityMode.Transport;
+				binding.Security.Transport.ClientCredentialType = TcpClientCredentialType.Windows;
+				binding.Security.Transport.ProtectionLevel = System.Net.Security.ProtectionLevel.EncryptAndSign;
+
 				factory = new ChannelFactory<ReplicatorServiceContract>(binding,
-					new EndpointAddress($"net.tcp://localhost:{(servicePort == 5000 ? 5001 : 5000)}/Replicator"));
+					new EndpointAddress($"net.tcp://localhost:{(servicePort == 5000 ? 5001 : 5000)}/ReplicatorService"));
 
 				ReplicatorProxy = factory.CreateChannel();
+
+				Console.WriteLine($"Successfully created ReplicatorProxy at " +
+					$"\"net.tcp://localhost:{(servicePort == 5000 ? 5001 : 5000)}/ReplicatorService\"!");
 			}
 			catch (Exception e)
 			{
-				Console.WriteLine("Error while creating a SmartCardsService communication channel: " + e.Message);
+				Console.WriteLine("Error while creating a ReplicatorService communication channel: " + e.Message);
 				return false;
 			}
 
@@ -114,24 +143,54 @@ namespace SmartCardsService.Connections
 		{
 			try
 			{
-				if(factory != null)
+				if (factory != null)
 					factory.Close();
 			}
 			catch (Exception e)
 			{
-				Console.WriteLine("Error while creating a SmartCardsService communication channel: " + e.Message);
+				Console.WriteLine("Error while closing a ReplicatorService communication channel: " + e.Message);
 				return false;
 			}
 
 			return true;
 		}
 
-		internal static bool OpenValidationServiceEndpoint()
+		internal static bool OpenValidationServiceHost()
 		{
+			try
+			{
+				ValidationServiceHost = new ServiceHost(typeof(ValidationService));
+
+				NetTcpBinding binding = new NetTcpBinding();
+				//binding.Security.Mode = SecurityMode.Transport;
+				//binding.Security.Transport.ClientCredentialType = TcpClientCredentialType.Windows;
+				//binding.Security.Transport.ProtectionLevel = System.Net.Security.ProtectionLevel.EncryptAndSign;
+
+				ValidationServiceHost.AddServiceEndpoint(typeof(ValidationServiceContract),
+					binding, $"net.tcp://localhost:{ServicePort}/ValidationService");
+				ValidationServiceHost.Open();
+				Console.WriteLine($"ValidationService host ready at \"net.tcp://localhost:{ServicePort}/ValidationService\"!");
+			}
+			catch (Exception e)
+			{
+				Console.WriteLine($"ERROR while trying to open host at \"net.tcp://localhost:{ServicePort}/ValidationService\" endpoint: {e.Message}");
+				return false;
+			}
 			return true;
 		}
-		internal static bool CloseValidationServiceEndpoint()
+		internal static bool CloseValidationServiceHost()
 		{
+			try
+			{
+				ValidationServiceHost.Close();
+				Console.WriteLine("ValidationService host closed!");
+			}
+			catch (Exception e)
+			{
+				Console.WriteLine("ERROR while trying to close ValidationService host: " + e.Message);
+				return false;
+			}
+
 			return true;
 		}
 

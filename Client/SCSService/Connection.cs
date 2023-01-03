@@ -13,13 +13,17 @@ namespace Client.SCSService
 		static ChannelFactory<SCServiceContract> factory;
 		internal static SCServiceContract ScsProxy { get; set; }
 
-		internal static bool CreateSCServiceProxy()
+		internal static bool CreateSCServiceProxy(string connectionPort)
 		{
 			try
 			{
 				NetTcpBinding binding = new NetTcpBinding();
+				binding.Security.Mode = SecurityMode.Transport;
+				binding.Security.Transport.ClientCredentialType = TcpClientCredentialType.Windows;
+				binding.Security.Transport.ProtectionLevel = System.Net.Security.ProtectionLevel.EncryptAndSign;
+
 				factory = new ChannelFactory<SCServiceContract>(binding,
-					new EndpointAddress("net.tcp://localhost:5000/SCService"));
+					new EndpointAddress($"net.tcp://localhost:{connectionPort}/SCService"));
 
 				ScsProxy = factory.CreateChannel();
 			}

@@ -13,5 +13,7 @@ namespace SCSCommon.Services
 	{
 		[OperationContract]
 		bool CreateSmartCard(User user);
+		[OperationContract]
+		bool ChangePin(User user);
 	}
 }

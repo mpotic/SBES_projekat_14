@@ -16,12 +16,12 @@ namespace SmartCardsService
 		static void Main(string[] args)
 		{
 			Replication replication = new Replication();
-
 			replication.SetServiceType();
-
 			WCFManager.ServicePort = Replication.ServiceType == ServiceTypeEnum.Primary ? 5000 : 5001;
+			
 			WCFManager.OpenSCServiceHost();
 			WCFManager.OpenReplicatorServiceHost();
+			WCFManager.OpenValidationServiceHost();
 
 			ShutDown();
 		}
@@ -30,8 +30,11 @@ namespace SmartCardsService
 		{
 			Console.WriteLine("Press any key to exit shutdown the server...");
 			Console.ReadKey();
+
 			WCFManager.CloseSCServiceHost();
+			WCFManager.CloseReplicatorServiceHost();
 			WCFManager.CloseReplicatorProxy();
+			WCFManager.CloseValidationServiceHost();
 		}
 	}
 }
