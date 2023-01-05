@@ -17,10 +17,27 @@ namespace SmartCardsService.Services
 		
 		public bool CreateSmartCard(User user)
 		{
-			if (UserManager.RegisterNewUser(new User(user)))
-				return WCFManager.ReplicatorProxy.ReplicateUserRegistration(user);
+			bool state = UserManager.RegisterNewUser(new User(user));
+			if (state)
+			{
+				WCFManager.ReplicatorProxy.ReplicateUserRegistration(user);
 
-			return false;
+				//Make exchange certificates
+				Console.WriteLine("\n----------------------- M A K E - C E R T I F I C A T E S -----------------------");
+				Certificates.GenerateCertificate(user.SubjectName, user.OrganizationalUnit, user.SubjectName + "_exchange", false);
+				Console.WriteLine("Repeat the password:");
+				string password = Console.ReadLine().Trim();
+				Certificates.GeneratePFX(user.SubjectName + "_exchange", password);
+
+				//Make sign certificates
+				Certificates.GenerateCertificate(user.SubjectName, user.OrganizationalUnit, user.SubjectName + "_signature", false);
+				Console.WriteLine("Repeat the password:");
+				password = Console.ReadLine().Trim();
+				Certificates.GeneratePFX(user.SubjectName + "_signature", password);
+				Console.WriteLine("---------------------------------------------------------------------------------\n");
+			}
+
+			return state;
 		}
 
 		public bool ChangePin(User user)

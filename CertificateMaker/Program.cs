@@ -5,8 +5,37 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SmartCardsService.Features
+namespace CertificateMaker
 {
+	class Program
+	{
+		static void Main(string[] args)
+		{
+			while (true)
+			{
+				Console.WriteLine("CN: ");
+				string cn = Console.ReadLine().Trim();
+				Console.WriteLine("OU: ");
+				string ou = Console.ReadLine().Trim();
+				Console.WriteLine("filename: ");
+				string filename = Console.ReadLine().Trim();
+				Console.WriteLine("Input \"sign\" for signature sertificate, press enter for exchange certificate.");
+				bool sign = Console.ReadLine().Trim().Equals("sign");
+
+				Certificates.GenerateCertificate(cn, ou, filename, sign);
+
+				Console.WriteLine("The password you used when creating the new certificate.");
+				string password = Console.ReadLine();
+				
+				Certificates.GeneratePFX(filename, password);
+
+				Console.WriteLine("Press 0 to exit the program or any other key to continue...");
+				if (Console.ReadKey().KeyChar.ToString() == "0")
+					break;
+			}
+		}
+	}
+
 	/// <summary>
 	/// For methods in this class to work SmartCardsServiceCA.cer and SmartCardsService.pvk and makecert.exe and pvk2pfx.exe need to be in the Debug location
 	/// of the project (.exe and those should be at the same location) and the project has to be started with admin priviledges.

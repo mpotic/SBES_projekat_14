@@ -27,10 +27,9 @@ namespace SmartCardsService.Features
 
 			ServiceType = (ServiceTypeEnum)type;
 
-			if (ServiceType == ServiceTypeEnum.Primary)
-				DatabaseCRUD.TableName = "SmartCards";
-			else
-				DatabaseCRUD.TableName = "SmartCardsReplicator";
+			if (ServiceType == ServiceTypeEnum.Secondary)
+				DatabaseCRUD.DbConnection.ConnectionString = 
+					$@"Server=DESKTOP-SUTD4IG\SQLEXPRESS;Initial Catalog=SBES_Replicator;Integrated Security=true;";
 
 			return true;
 		}

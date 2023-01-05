@@ -22,6 +22,8 @@ namespace Client.SCSService
 				binding.Security.Transport.ClientCredentialType = TcpClientCredentialType.Windows;
 				binding.Security.Transport.ProtectionLevel = System.Net.Security.ProtectionLevel.EncryptAndSign;
 
+				binding.SendTimeout = new TimeSpan(0, 3, 0);
+
 				factory = new ChannelFactory<SCServiceContract>(binding,
 					new EndpointAddress($"net.tcp://localhost:{connectionPort}/SCService"));
 

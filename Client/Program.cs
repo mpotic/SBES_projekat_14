@@ -35,7 +35,7 @@ namespace Client
 
 				Connection.CloseSCServiceProxy();
 				
-				Console.WriteLine("Press 0 key to exit any key to continue...");
+				Console.WriteLine("Press 0 key to exit or any other key to continue...");
 				if (Console.ReadKey().KeyChar.ToString() == "0")
 					break;
 			}
