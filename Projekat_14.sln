@@ -13,6 +13,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomLogger", "CustomLogge
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CertificateMaker", "CertificateMaker\CertificateMaker.csproj", "{F800060C-54C7-4C9C-9596-096249663BA8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ATM", "ATM\ATM.csproj", "{191204E3-4085-4F0F-8135-88923B00D1BF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ATMCommon", "ATMCommon\ATMCommon.csproj", "{0EC564EE-87A9-402A-9748-364524AB2799}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +43,14 @@ Global
 		{F800060C-54C7-4C9C-9596-096249663BA8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F800060C-54C7-4C9C-9596-096249663BA8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F800060C-54C7-4C9C-9596-096249663BA8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{191204E3-4085-4F0F-8135-88923B00D1BF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{191204E3-4085-4F0F-8135-88923B00D1BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{191204E3-4085-4F0F-8135-88923B00D1BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{191204E3-4085-4F0F-8135-88923B00D1BF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0EC564EE-87A9-402A-9748-364524AB2799}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0EC564EE-87A9-402A-9748-364524AB2799}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0EC564EE-87A9-402A-9748-364524AB2799}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0EC564EE-87A9-402A-9748-364524AB2799}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

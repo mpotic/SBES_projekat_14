@@ -1,4 +1,5 @@
-﻿using Client.SCSService;
+﻿using Client.ATMService;
+using Client.SCSService;
 using SmartCardsService.Models;
 using System;
 using System.Collections.Generic;
@@ -27,13 +28,16 @@ namespace Client
 				else
 					connectionPort = "5001";
 
+				string ATMconnectionPort = "5002";
 				Connection.CreateSCServiceProxy(connectionPort);
+				ATMConnection.CreateATMServiceProxy(ATMconnectionPort);
 				
 				Requests requests = new Requests();
 				requests.AddSmartCard();
 				requests.ChangeUserPin();
 
 				Connection.CloseSCServiceProxy();
+				ATMConnection.CloseATMServiceProxy();
 				
 				Console.WriteLine("Press 0 key to exit or any other key to continue...");
 				if (Console.ReadKey().KeyChar.ToString() == "0")

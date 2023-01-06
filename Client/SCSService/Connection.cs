@@ -1,4 +1,5 @@
-﻿using SCSCommon.Services;
+﻿using ATMCommon;
+using SCSCommon.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -52,5 +53,7 @@ namespace Client.SCSService
 
 			return true;
 		}
+
+
 	}
 }
