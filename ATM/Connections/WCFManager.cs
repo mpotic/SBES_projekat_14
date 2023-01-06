@@ -1,9 +1,13 @@
 ﻿using ATM.Services;
 using ATMCommon;
+using CertificateManager;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
+using System.Security.Principal;
 using System.ServiceModel;
+using System.ServiceModel.Security;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -23,10 +27,15 @@ namespace ATM.Connections
 
 			try
 			{
+
+				string atmCertCN = Formatter.ParseName(WindowsIdentity.GetCurrent().Name);
+
 				AtmServiceHost = new ServiceHost(typeof(ATMService));
 
 				NetTcpBinding binding = new NetTcpBinding();
 				binding.Security.Mode = SecurityMode.Transport;
+				//binding.Security.Transport.ClientCredentialType = TcpClientCredentialType.Certificate;
+				//Obrisati liniju ispod
 				binding.Security.Transport.ClientCredentialType = TcpClientCredentialType.Windows;
 				binding.Security.Transport.ProtectionLevel = System.Net.Security.ProtectionLevel.EncryptAndSign;
 
@@ -34,6 +43,13 @@ namespace ATM.Connections
 					binding, $"net.tcp://localhost:{ServicePort}/ATMService");
 				AtmServiceHost.Open();
 				Console.WriteLine($"ATM Service host ready at \"net.tcp://localhost:{ServicePort}/ATMService\"!");
+
+				/*Skinuti komentar kada se naprave sertifikati
+				AtmServiceHost.Credentials.ClientCertificate.Authentication.CertificateValidationMode = X509CertificateValidationMode.Custom;
+				AtmServiceHost.Credentials.ClientCertificate.Authentication.CustomCertificateValidator = new ATMCertValidator();
+				AtmServiceHost.Credentials.ClientCertificate.Authentication.RevocationMode = X509RevocationMode.NoCheck;
+				AtmServiceHost.Credentials.ServiceCertificate.Certificate = CertManager.GetCertificateFromStorage(StoreName.My, StoreLocation.LocalMachine, atmCertCN);
+				*/
 			}
 			catch (Exception e)
 			{

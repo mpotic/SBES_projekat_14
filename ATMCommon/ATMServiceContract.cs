@@ -11,8 +11,6 @@ namespace ATMCommon
 	[ServiceContract]
 	public interface ATMServiceContract
 	{
-		//[OperationContract]
-		//Metode ATMa
 		[OperationContract]
 		bool ValidateSmartCardPin(string subjectName, string pin);
 		[OperationContract]

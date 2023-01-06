@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace SCSCommon.Services
 {
-	internal class ValidationService : ValidationServiceContract
+	public class ValidationService : ValidationServiceContract
 	{
 		private UserManager UserManager { get; set; } = new UserManager();
 		public bool ValidateSmartCardPin(User user)

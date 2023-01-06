@@ -28,13 +28,17 @@ namespace Client
 				else
 					connectionPort = "5001";
 
-				string ATMconnectionPort = "5002";
 				Connection.CreateSCServiceProxy(connectionPort);
-				ATMConnection.CreateATMServiceProxy(ATMconnectionPort);
 				
 				Requests requests = new Requests();
-				requests.AddSmartCard();
-				requests.ChangeUserPin();
+				//requests.AddSmartCard();
+				//requests.ChangeUserPin();
+
+				string ATMconnectionPort = "5002";
+				Console.WriteLine("Connecting to ATM.");
+				ATMConnection.CreateATMServiceProxy(ATMconnectionPort);
+
+				ATMRequests atmRequests = new ATMRequests();
 
 				Connection.CloseSCServiceProxy();
 				ATMConnection.CloseATMServiceProxy();

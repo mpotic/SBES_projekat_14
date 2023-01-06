@@ -17,6 +17,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ATM", "ATM\ATM.csproj", "{1
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ATMCommon", "ATMCommon\ATMCommon.csproj", "{0EC564EE-87A9-402A-9748-364524AB2799}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CertificateManager", "CertificateManager\CertificateManager.csproj", "{CF04B52D-AA2B-4B36-A3F4-70E02ADB18C7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,6 +53,10 @@ Global
 		{0EC564EE-87A9-402A-9748-364524AB2799}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0EC564EE-87A9-402A-9748-364524AB2799}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0EC564EE-87A9-402A-9748-364524AB2799}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CF04B52D-AA2B-4B36-A3F4-70E02ADB18C7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CF04B52D-AA2B-4B36-A3F4-70E02ADB18C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CF04B52D-AA2B-4B36-A3F4-70E02ADB18C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CF04B52D-AA2B-4B36-A3F4-70E02ADB18C7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

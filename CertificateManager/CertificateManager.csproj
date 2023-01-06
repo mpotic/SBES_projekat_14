@@ -4,17 +4,16 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{E84717AF-439C-4EF1-8A14-3CF006458EA1}</ProjectGuid>
-    <OutputType>Exe</OutputType>
-    <RootNamespace>Client</RootNamespace>
-    <AssemblyName>Client</AssemblyName>
+    <ProjectGuid>{CF04B52D-AA2B-4B36-A3F4-70E02ADB18C7}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>CertificateManager</RootNamespace>
+    <AssemblyName>CertificateManager</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -24,7 +23,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -36,7 +34,6 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.IdentityModel" />
-    <Reference Include="System.ServiceModel" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -45,29 +42,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ATMService\ATMConnection.cs" />
-    <Compile Include="ATMService\ATMRequests.cs" />
-    <Compile Include="Program.cs" />
+    <Compile Include="ATMCertValidator.cs" />
+    <Compile Include="CertManager.cs" />
+    <Compile Include="ClientCertValidator.cs" />
+    <Compile Include="Formatter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SCSService\Connection.cs" />
-    <Compile Include="SCSService\Requests.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\ATMCommon\ATMCommon.csproj">
-      <Project>{0EC564EE-87A9-402A-9748-364524AB2799}</Project>
-      <Name>ATMCommon</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\CertificateManager\CertificateManager.csproj">
-      <Project>{CF04B52D-AA2B-4B36-A3F4-70E02ADB18C7}</Project>
-      <Name>CertificateManager</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\SCSCommon\SCSCommon.csproj">
-      <Project>{AE9162C8-CC11-477A-B43D-284A2B2470F4}</Project>
-      <Name>SCSCommon</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

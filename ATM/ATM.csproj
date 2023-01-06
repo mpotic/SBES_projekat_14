@@ -35,6 +35,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.IdentityModel" />
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -57,9 +58,17 @@
       <Project>{0ec564ee-87a9-402a-9748-364524ab2799}</Project>
       <Name>ATMCommon</Name>
     </ProjectReference>
+    <ProjectReference Include="..\CertificateManager\CertificateManager.csproj">
+      <Project>{CF04B52D-AA2B-4B36-A3F4-70E02ADB18C7}</Project>
+      <Name>CertificateManager</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SCSCommon\SCSCommon.csproj">
       <Project>{ae9162c8-cc11-477a-b43d-284a2b2470f4}</Project>
       <Name>SCSCommon</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SmartCardsService\SmartCardsService.csproj">
+      <Project>{EF780759-5EAC-4658-8C37-B4DF48F2EBD5}</Project>
+      <Name>SmartCardsService</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
