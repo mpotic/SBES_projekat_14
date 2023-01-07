@@ -12,7 +12,8 @@ namespace CertificateManager
 	{
 		public override void Validate(X509Certificate2 clientCertificate)
 		{
-			if (!clientCertificate.Subject.Equals("SmartCardsServiceCA"))
+			string[] certIssuer = clientCertificate.IssuerName.Name.Split('=');
+			if (!certIssuer[1].Equals("SmartCardsServiceCA"))
 			{
 				throw new Exception("Client is not certified to be Smart Card User.");
 			}

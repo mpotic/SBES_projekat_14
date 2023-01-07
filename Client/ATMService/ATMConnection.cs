@@ -24,31 +24,27 @@ namespace Client.ATMService
 
 				NetTcpBinding binding = new NetTcpBinding();
 				binding.Security.Mode = SecurityMode.Transport;
-				//Skinuti komentar kada se naprave sertifikati
-				//binding.Security.Transport.ClientCredentialType = TcpClientCredentialType.Certificate;
-				binding.Security.Transport.ClientCredentialType = TcpClientCredentialType.Windows;
+				binding.Security.Transport.ClientCredentialType = TcpClientCredentialType.Certificate;
 				binding.Security.Transport.ProtectionLevel = System.Net.Security.ProtectionLevel.EncryptAndSign;
 
-				/*Skinuti komentar kada se naprave sertifikati
 				X509Certificate2 atmCert = CertManager.GetCertificateFromStorage(StoreName.TrustedPeople, StoreLocation.LocalMachine, ATMCertCN);
 				EndpointAddress address = new EndpointAddress(new Uri($"net.tcp://localhost:{connectionPort}/ATMService"),
-										  new X509CertificateEndpointIdentity(atmCert));*/
+										  new X509CertificateEndpointIdentity(atmCert));
 
-				EndpointAddress address = new EndpointAddress($"net.tcp://localhost:{connectionPort}/ATMService");
 
 				binding.SendTimeout = new TimeSpan(0, 3, 0);
 
 				factoryATM = new ChannelFactory<ATMServiceContract>(binding, address);
 
+				//string clientCertCN = "test";
 				string clientCertCN = Formatter.ParseName(WindowsIdentity.GetCurrent().Name);
 
-				/*Skinuti komentar kada se naprave sertifikati
 				factoryATM.Credentials.ServiceCertificate.Authentication.CertificateValidationMode = System.ServiceModel.Security.X509CertificateValidationMode.Custom;
 				factoryATM.Credentials.ServiceCertificate.Authentication.CustomCertificateValidator = new ClientCertValidator();
 				factoryATM.Credentials.ServiceCertificate.Authentication.RevocationMode = X509RevocationMode.NoCheck;
 
 				factoryATM.Credentials.ClientCertificate.Certificate = CertManager.GetCertificateFromStorage(StoreName.My, StoreLocation.LocalMachine, clientCertCN);
-				*/
+				
 				ATMProxy = factoryATM.CreateChannel();
 			}
 			catch (Exception e)

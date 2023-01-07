@@ -21,9 +21,7 @@ namespace ATM.Services
 
         public bool ValidateSmartCardPin(string subjectName, string pin)
         {
-            //Skinuti komentar kada se naprave sertifikati
-            //return ValidationService.ValidateSmartCardPin(new User(subjectName, pin, "", ""));
-            return true;
+            return ValidationService.ValidateSmartCardPin(new User(subjectName, pin, "", ""));
         }
     }
 }

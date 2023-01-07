@@ -31,14 +31,16 @@ namespace Client
 				Connection.CreateSCServiceProxy(connectionPort);
 				
 				Requests requests = new Requests();
-				//requests.AddSmartCard();
-				//requests.ChangeUserPin();
+				requests.AddSmartCard();
+				requests.ChangeUserPin();
 
 				string ATMconnectionPort = "5002";
 				Console.WriteLine("Connecting to ATM.");
 				ATMConnection.CreateATMServiceProxy(ATMconnectionPort);
 
 				ATMRequests atmRequests = new ATMRequests();
+				atmRequests.Authentication();
+
 
 				Connection.CloseSCServiceProxy();
 				ATMConnection.CloseATMServiceProxy();

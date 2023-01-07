@@ -29,6 +29,7 @@ namespace Client.ATMService
 			}
 
 			return ATMConnection.ATMProxy.ValidateSmartCardPin(subjectName, pin);
+
         }
     }
 }

@@ -13,9 +13,8 @@ namespace CertificateManager
 	{
 		public override void Validate(X509Certificate2 certificate)
 		{
-			X509Certificate2 atmCert = CertManager.GetCertificateFromStorage(StoreName.My, StoreLocation.LocalMachine, Formatter.ParseName(WindowsIdentity.GetCurrent().Name));
-
-			if (!certificate.Issuer.Equals(atmCert.Issuer))
+			X509Certificate2 scsCert = CertManager.GetCertificateFromStorage(StoreName.Root, StoreLocation.LocalMachine, "SmartCardsServiceCA");
+			if (!certificate.IssuerName.Name.Equals(scsCert.SubjectName.Name))
 			{
 				throw new Exception("Certificate is not from the valid issuer.");
 			}

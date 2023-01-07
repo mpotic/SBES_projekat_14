@@ -11,6 +11,7 @@ namespace CertificateManager
     {
 		public static X509Certificate2 GetCertificateFromStorage(StoreName storeName, StoreLocation storeLocation, string subjectName)
 		{
+
 			X509Store store = new X509Store(storeName, storeLocation);
 			store.Open(OpenFlags.ReadOnly);
 
@@ -18,7 +19,9 @@ namespace CertificateManager
 
 			foreach (X509Certificate2 c in certCollection)
 			{
-				if (c.SubjectName.Name.Equals(string.Format("CN={0}", subjectName)))
+				string[] certSubjectComma = c.SubjectName.Name.Split(',');
+				string[] certSubjectEquals = certSubjectComma[0].Split('=');
+				if (certSubjectEquals[1].Equals(subjectName))
 				{
 					return c;
 				}
