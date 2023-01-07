@@ -1,6 +1,9 @@
-﻿using System;
+﻿using CertificateManager;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
+using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -27,8 +30,15 @@ namespace Client.ATMService
 				Console.WriteLine("Wrong pin number!");
 				return false;
 			}
+			string message = subjectName + "+" + pin;
 
-			return ATMConnection.ATMProxy.ValidateSmartCardPin(subjectName, pin);
+			//string clientCertCN = "test";
+			string clientCertCN = Formatter.ParseName(WindowsIdentity.GetCurrent().Name);
+			X509Certificate2 certificateSign = CertManager.GetCertificateFromStorage(StoreName.My, StoreLocation.LocalMachine, clientCertCN);
+			byte[] signature = DigitalSignature.Create(message, HashAlgorithm.SHA1, certificateSign);
+
+
+			return ATMConnection.ATMProxy.ValidateSmartCardPin(message, signature);
 
         }
     }

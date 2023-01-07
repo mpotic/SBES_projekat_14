@@ -12,7 +12,7 @@ namespace ATMCommon
 	public interface ATMServiceContract
 	{
 		[OperationContract]
-		bool ValidateSmartCardPin(string subjectName, string pin);
+		bool ValidateSmartCardPin(string message, byte[] clientSignature);
 		[OperationContract]
 		List<User> GetAllUsers();
 	}
