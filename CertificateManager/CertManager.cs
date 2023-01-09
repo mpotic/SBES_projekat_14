@@ -29,5 +29,31 @@ namespace CertificateManager
 
 			return null;
 		}
+
+		public static string GetOrganizationalUnit(StoreName storeName, StoreLocation storeLocation, string subjectName)
+        {
+			X509Store store = new X509Store(storeName, storeLocation);
+			store.Open(OpenFlags.ReadOnly);
+
+			X509Certificate2Collection certCollection = store.Certificates.Find(X509FindType.FindBySubjectName, subjectName, true);
+			foreach (X509Certificate2 c in certCollection)
+			{
+				string[] certSubjectComma = c.SubjectName.Name.Split(',');
+				string[] certSubjectEquals = certSubjectComma[1].Split('=');
+				if (certSubjectEquals[1].Equals("SmartCardUser"))
+				{
+					return "SmartCardUser";
+				}
+                else if (certSubjectEquals[1].Equals("Manager"))
+                {
+					return "Manager";
+                }
+                else
+                {
+					return "Error";
+                }
+			}
+			return null;
+		}
 	}
 }

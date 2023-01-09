@@ -20,5 +20,15 @@ namespace SCSCommon.Services
 		{
 			return DatabaseCRUD.GetAllUsers();
 		}
+		public bool CheckPayment(string amount, string subjectName)
+        {
+			//return DatabaseCRUD.CheckPayment(amount, subjectName);
+			return true;
+        }
+		public bool CheckPayout(string amount, string subjectName)
+        {
+			//return DatabaseCRUD.CheckPayout(amount, subjectName);
+			return true;
+        }
 	}
 }

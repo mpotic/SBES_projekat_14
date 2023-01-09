@@ -14,6 +14,8 @@ namespace ATM
 			WCFManager.ServicePort = 5002;
 			WCFManager.OpenATMHost();
 
+
+
 			ShutDown();
 
 		}

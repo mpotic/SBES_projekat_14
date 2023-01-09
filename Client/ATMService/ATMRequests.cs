@@ -41,5 +41,43 @@ namespace Client.ATMService
 			return ATMConnection.ATMProxy.ValidateSmartCardPin(message, signature);
 
         }
+
+		public bool Payment()
+        {
+			Console.WriteLine("Enter amount you want to cash in: ");
+			string amount = Console.ReadLine();
+			int number;
+			bool isNumber = int.TryParse(amount, out number);
+			if (!isNumber)
+			{
+				Console.WriteLine("Enter valid number!");
+				return false;
+			}
+			//string clientCertCN = "test";
+			string clientCertCN = Formatter.ParseName(WindowsIdentity.GetCurrent().Name);
+			string message = amount + "+" + clientCertCN;
+			X509Certificate2 certificateSign = CertManager.GetCertificateFromStorage(StoreName.My, StoreLocation.LocalMachine, clientCertCN);
+			byte[] signature = DigitalSignature.Create(message, HashAlgorithm.SHA1, certificateSign);
+			return ATMConnection.ATMProxy.CheckPayment(message, signature);
+		}
+
+		public bool Payout()
+        {
+			Console.WriteLine("Enter amount you want to cash out: ");
+			string amount = Console.ReadLine();
+			int number;
+			bool isNumber = int.TryParse(amount, out number);
+            if (!isNumber)
+            {
+                Console.WriteLine("Enter valid number!");
+				return false;
+            }
+			//string clientCertCN = "test";
+			string clientCertCN = Formatter.ParseName(WindowsIdentity.GetCurrent().Name);
+			string message = amount + "+" + clientCertCN;
+			X509Certificate2 certificateSign = CertManager.GetCertificateFromStorage(StoreName.My, StoreLocation.LocalMachine, clientCertCN);
+			byte[] signature = DigitalSignature.Create(message, HashAlgorithm.SHA1, certificateSign);
+			return ATMConnection.ATMProxy.CheckPayout(message, signature);
+        }
     }
 }

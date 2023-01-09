@@ -32,7 +32,6 @@ namespace CustomLogger
 			}
 		}
 
-
 		public static void ReplicationSuccess(string service, string subjectName)
 		{
 			if (customLog != null)
@@ -145,6 +144,7 @@ namespace CustomLogger
 				}
 			}
 		}
+
 
 		public void Dispose()
 		{

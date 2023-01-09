@@ -40,7 +40,9 @@ namespace Client
 
 				ATMRequests atmRequests = new ATMRequests();
 				atmRequests.Authentication();
-
+                
+				atmRequests.Payment();
+				atmRequests.Payout();
 
 				Connection.CloseSCServiceProxy();
 				ATMConnection.CloseATMServiceProxy();
