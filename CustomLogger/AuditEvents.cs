@@ -10,7 +10,9 @@ namespace CustomLogger
 {
 	public enum AuditEventTypes
 	{
-		ReplicationSuccess = 0,
+		CardCreationSuccess = 0,
+		CardCreationFailure,
+		ReplicationSuccess,
 		ReplicationFailure,
 		PinReplicationSuccess, 
 		PinReplicationFailure, 
@@ -37,6 +39,22 @@ namespace CustomLogger
 					}
 					return resourceManager;
 				}
+			}
+		}
+
+		public static string CardCreationSuccess
+		{
+			get
+			{
+				return ResourceMgr.GetString(AuditEventTypes.CardCreationSuccess.ToString());
+			}
+		}
+
+		public static string CardCreationFailure
+		{
+			get
+			{
+				return ResourceMgr.GetString(AuditEventTypes.CardCreationFailure.ToString());
 			}
 		}
 
@@ -86,6 +104,5 @@ namespace CustomLogger
 				return ResourceMgr.GetString(AuditEventTypes.PinChangeFailure.ToString());
 			}
 		}
-
 	}
 }

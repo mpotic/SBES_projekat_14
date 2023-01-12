@@ -117,6 +117,12 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="CardCreationFailure" xml:space="preserve">
+    <value>Service {0} failed to create a smart card for {1}.</value>
+  </data>
+  <data name="CardCreationSuccess" xml:space="preserve">
+    <value>Service {0} successfully created a smart card for {1}.</value>
+  </data>
   <data name="PinChangeFailure" xml:space="preserve">
     <value>Service {0} failed to change user {1} pin!</value>
   </data>

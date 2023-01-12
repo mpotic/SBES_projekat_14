@@ -25,8 +25,8 @@ namespace SmartCardsService.Connections
 				SqlDataAdapter adapter = new SqlDataAdapter();
 				SqlCommand command;
 
-				string query = $"Insert into {TableName} (SubjectName, OrganizationalUnit, Pin)" + 
-							$"values('{user.SubjectName}', '{user.OrganizationalUnit}', '{user.Pin}')";
+				string query = $"Insert into {TableName} (SubjectName, OrganizationalUnit, Pin, Balance)" + 
+							$"values('{user.SubjectName}', '{user.OrganizationalUnit}', '{user.Pin}', 0)";
 
 				command = new SqlCommand(query, dbConnection.connection);
 
@@ -55,7 +55,7 @@ namespace SmartCardsService.Connections
 				SqlDataAdapter adapter = new SqlDataAdapter();
 				SqlCommand command;
 
-				string query = $@"Update {tableName} set Pin='{user.NewPin}' where SubjectName='{user.SubjectName}'";
+				string query = $"Update {tableName} set Pin='{user.NewPin}' where SubjectName='{user.SubjectName}'";
 
 				command = new SqlCommand(query, dbConnection.connection);
 
@@ -104,6 +104,75 @@ namespace SmartCardsService.Connections
 			}
 		}
 
+		internal static User GetUser(string subjectName)
+		{
+			try
+			{
+				dbConnection.OpenConnection();
+
+				SqlCommand command;
+				User user = null;
+				string query = $@"Select * from {TableName} where SubjectName='{subjectName}'";
+				command = new SqlCommand(query, dbConnection.connection);
+
+				SqlDataReader reader = command.ExecuteReader();
+
+				if (reader.Read())
+				{
+					user = new User()
+					{
+						SubjectName = reader.GetString(0),
+						OrganizationalUnit = reader.GetString(1),
+						Pin = reader.GetString(2),
+						Amount = double.Parse(reader.GetDecimal(3).ToString())
+					};
+				}
+
+				reader.Close();
+				dbConnection.CloseConnection();
+
+				return user;
+			}
+			catch (Exception e)
+			{
+				Console.WriteLine($"ERROR while trying to get the user named {subjectName} on " +
+					$"{Replication.ServiceType.ToString()} server: " + e.Message);
+
+				return null;
+			}
+		}
+
+		internal static bool WriteBalance(string subjectName, double newBalance)
+		{
+			try
+			{
+				dbConnection.OpenConnection();
+
+				string query = $"Update {tableName} set Balance='{newBalance}' where SubjectName='{subjectName}'";
+				SqlCommand command = new SqlCommand(query, dbConnection.connection);
+
+				SqlDataAdapter adapter = new SqlDataAdapter();
+				adapter.UpdateCommand = command;
+				
+				if (adapter.UpdateCommand.ExecuteNonQuery() <= 0)
+				{
+					dbConnection.CloseConnection();
+					return false;
+				}
+
+				dbConnection.CloseConnection();
+
+				return true;
+			}
+			catch (Exception e)
+			{
+				Console.WriteLine($"ERROR while trying to write new balance on {subjectName} smart card account on " +
+					$"{Replication.ServiceType.ToString()} server: " + e.Message);
+
+				return false;
+			}
+		}
+
 		internal static List<User> GetAllUsers()
 		{
 			dbConnection.OpenConnection();
@@ -119,6 +188,7 @@ namespace SmartCardsService.Connections
 					reader.GetValue(1).ToString().Trim(), ""));
 			}
 
+			reader.Close();
 			dbConnection.CloseConnection();
 
 			return users;

@@ -30,7 +30,6 @@ namespace SmartCardsService.Features
 
 		internal bool CheckPinValidity(User user)
 		{
-
 			user.Pin = this.MakeHash(user.Pin);
 
 			return DatabaseCRUD.ExistsUserWithPin(user);
@@ -44,7 +43,6 @@ namespace SmartCardsService.Features
 				return DatabaseCRUD.UpdateUserPin(user);
 			}
 				
-
 			return false;
 		}
 	}

@@ -145,6 +145,44 @@ namespace CustomLogger
 			}
 		}
 
+		public static void CardCreationSuccess(string service, string subjectName)
+		{
+			if (customLog != null)
+			{
+				try
+				{
+					string CardCreationSuccess =
+						AuditEvents.CardCreationSuccess;
+					string message = String.Format(CardCreationSuccess, service, subjectName);
+					customLog.WriteEntry(message);
+				}
+				catch (Exception e)
+				{
+					Console.WriteLine((string.Format("Error while trying to write event (eventid = {0}) to event log.",
+						(int)AuditEventTypes.CardCreationSuccess)), "\nException", e.Message);
+				}
+			}
+		}
+
+		public static void CardCreationFailure(string service, string subjectName)
+		{
+			if (customLog != null)
+			{
+				try
+				{
+					string CardCreationFailure =
+						AuditEvents.CardCreationFailure;
+					string message = String.Format(CardCreationFailure, service, subjectName);
+					customLog.WriteEntry(message, EventLogEntryType.Error);
+				}
+				catch (Exception e)
+				{
+					Console.WriteLine((string.Format("Error while trying to write event (eventid = {0}) to event log.",
+						(int)AuditEventTypes.CardCreationFailure)), "\nException", e.Message);
+				}
+			}
+		}
+
 
 		public void Dispose()
 		{

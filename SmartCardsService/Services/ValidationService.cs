@@ -12,23 +12,26 @@ namespace SCSCommon.Services
 	public class ValidationService : ValidationServiceContract
 	{
 		private UserManager UserManager { get; set; } = new UserManager();
-		public bool ValidateSmartCardPin(User user)
+		private Validation Validation { get; set; } = new Validation();
+
+ 		public bool ValidateSmartCardPin(User user)
 		{
 			return UserManager.CheckPinValidity(user);
 		}
+
 		public List<User> GetAllUsers()
 		{
 			return DatabaseCRUD.GetAllUsers();
 		}
-		public bool CheckPayment(string amount, string subjectName)
+
+		public bool ValidateDeposit(string amount, string subjectName)
         {
-			//return DatabaseCRUD.CheckPayment(amount, subjectName);
-			return true;
+			return Validation.ValidateAndProcessDeposit(subjectName, amount);
         }
-		public bool CheckPayout(string amount, string subjectName)
+
+		public bool ValidatePayout(string amount, string subjectName)
         {
-			//return DatabaseCRUD.CheckPayout(amount, subjectName);
-			return true;
+			return Validation.ValidateAndProcessPayout(subjectName, amount);
         }
 	}
 }

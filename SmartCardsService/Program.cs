@@ -33,8 +33,9 @@ namespace SmartCardsService
 
 			WCFManager.CloseSCServiceHost();
 			WCFManager.CloseReplicatorServiceHost();
-			WCFManager.CloseReplicatorProxy();
 			WCFManager.CloseValidationServiceHost();
+
+			WCFManager.CloseReplicatorProxy();
 		}
 	}
 }

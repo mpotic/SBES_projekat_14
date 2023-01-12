@@ -61,6 +61,24 @@ namespace CustomLogger {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Service {0} failed to create a smart card for {1}..
+        /// </summary>
+        internal static string CardCreationFailure {
+            get {
+                return ResourceManager.GetString("CardCreationFailure", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Service {0} successfully created a smart card for {1}..
+        /// </summary>
+        internal static string CardCreationSuccess {
+            get {
+                return ResourceManager.GetString("CardCreationSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Service {0} failed to change user {1} pin!.
         /// </summary>
         internal static string PinChangeFailure {

@@ -52,7 +52,7 @@
     <Compile Include="Features\Certificates.cs" />
     <Compile Include="Features\UserManager.cs" />
     <Compile Include="Features\Replication.cs" />
-    <Compile Include="Features\Verification.cs" />
+    <Compile Include="Features\Validation.cs" />
     <Compile Include="Services\ReplicatorServiceContract.cs" />
     <Compile Include="Services\ReplicatorService.cs" />
     <Compile Include="Services\SCService.cs" />

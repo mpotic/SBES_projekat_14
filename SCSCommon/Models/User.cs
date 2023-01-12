@@ -18,6 +18,8 @@ namespace SmartCardsService.Models
 		string organizationalUnit;
 		[DataMember]
 		string newPin;
+		double amount;
+		public User() { }
 		public User(string subjectName, string pin, string organizationalUnit, string newPin)
 		{
 			SubjectName = subjectName;
@@ -36,5 +38,6 @@ namespace SmartCardsService.Models
 		public string Pin { get => pin; set => pin = value; }
 		public string OrganizationalUnit { get => organizationalUnit; set => organizationalUnit = value; }
 		public string NewPin { get => newPin; set => newPin = value; }
+		public double Amount { get => amount; set => amount = value; }
 	}
 }

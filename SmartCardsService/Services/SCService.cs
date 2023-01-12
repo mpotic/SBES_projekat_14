@@ -14,43 +14,46 @@ namespace SmartCardsService.Services
 	internal class SCService : SCServiceContract
 	{
 		private UserManager UserManager { get; set; } = new UserManager();
-		
+
 		public bool CreateSmartCard(User user)
 		{
-			bool state = UserManager.RegisterNewUser(new User(user));
-			if (state)
+			if (!UserManager.RegisterNewUser(new User(user)))
 			{
-				WCFManager.ReplicatorProxy.ReplicateUserRegistration(user);
-
-				//Make exchange certificates
-				Console.WriteLine("\n----------------------- M A K E - C E R T I F I C A T E S -----------------------");
-				Certificates.GenerateCertificate(user.SubjectName, user.OrganizationalUnit, user.SubjectName + "_exchange", false);
-				Console.WriteLine("Repeat the password:");
-				string password = Console.ReadLine().Trim();
-				Certificates.GeneratePFX(user.SubjectName + "_exchange", password);
-
-				//Make sign certificates
-				Certificates.GenerateCertificate(user.SubjectName, user.OrganizationalUnit, user.SubjectName + "_signature", false);
-				Console.WriteLine("Repeat the password:");
-				password = Console.ReadLine().Trim();
-				Certificates.GeneratePFX(user.SubjectName + "_signature", password);
-				Console.WriteLine("---------------------------------------------------------------------------------\n");
+				Audit.CardCreationFailure(Replication.ServiceType.ToString(), user.SubjectName);
+				return false;
 			}
 
-			return state;
+			Audit.CardCreationSuccess(Replication.ServiceType.ToString(), user.SubjectName);
+
+			WCFManager.ReplicatorProxy.ReplicateUserRegistration(user);
+
+			//Make exchange certificates
+			Console.WriteLine("\n----------------------- M A K E - C E R T I F I C A T E S -----------------------");
+			Certificates.GenerateCertificate(user.SubjectName, user.OrganizationalUnit, user.SubjectName + "_exchange", false);
+			Console.WriteLine("Repeat the password:");
+			string password = Console.ReadLine().Trim();
+			Certificates.GeneratePFX(user.SubjectName + "_exchange", password);
+
+			//Make sign certificates
+			Certificates.GenerateCertificate(user.SubjectName, user.OrganizationalUnit, user.SubjectName + "_signature", false);
+			Console.WriteLine("Repeat the password:");
+			password = Console.ReadLine().Trim();
+			Certificates.GeneratePFX(user.SubjectName + "_signature", password);
+			Console.WriteLine("---------------------------------------------------------------------------------\n");
+
+			return true;
 		}
 
 		public bool ChangePin(User user)
 		{
-
 			bool status = UserManager.ChangeUserPin(new User(user));
 			if (status)
+			{
 				Audit.PinChangeSuccess("SmartCardService/" + Replication.ServiceType.ToString(), user.SubjectName);
+				status = WCFManager.ReplicatorProxy.ReplicateUserUpdatePin(user);
+			}
 			else
 				Audit.PinChangeFailure("SmartCardService/" + Replication.ServiceType.ToString(), user.SubjectName);
-
-			if (status)
-				status = WCFManager.ReplicatorProxy.ReplicateUserUpdatePin(user);
 
 			return status;
 		}

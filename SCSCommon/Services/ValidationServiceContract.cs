@@ -15,5 +15,9 @@ namespace SCSCommon.Services
 		bool ValidateSmartCardPin(User user);
 		[OperationContract]
 		List<User> GetAllUsers();
+		[OperationContract]
+		bool ValidateDeposit(string amount, string subjectName);
+		[OperationContract]
+		bool ValidatePayout(string amount, string subjectName);
 	}
 }
