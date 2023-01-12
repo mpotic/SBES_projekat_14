@@ -62,6 +62,10 @@
       <Project>{CF04B52D-AA2B-4B36-A3F4-70E02ADB18C7}</Project>
       <Name>CertificateManager</Name>
     </ProjectReference>
+    <ProjectReference Include="..\CustomLogger\CustomLogger.csproj">
+      <Project>{B5032111-4244-4A5D-98E0-3273DB202E08}</Project>
+      <Name>CustomLogger</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SCSCommon\SCSCommon.csproj">
       <Project>{ae9162c8-cc11-477a-b43d-284a2b2470f4}</Project>
       <Name>SCSCommon</Name>

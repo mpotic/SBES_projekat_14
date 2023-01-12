@@ -11,8 +11,8 @@ using System.Threading.Tasks;
 
 namespace Client.ATMService
 {
-    internal static class ATMConnection
-    {
+	internal static class ATMConnection
+	{
 		static ChannelFactory<ATMServiceContract> factoryATM;
 		internal static ATMServiceContract ATMProxy { get; set; }
 
@@ -36,15 +36,15 @@ namespace Client.ATMService
 
 				factoryATM = new ChannelFactory<ATMServiceContract>(binding, address);
 
-				//string clientCertCN = "test";
-				string clientCertCN = Formatter.ParseName(WindowsIdentity.GetCurrent().Name);
+				string clientCertCN = "test";
+				//string clientCertCN = Formatter.ParseName(WindowsIdentity.GetCurrent().Name);
 
 				factoryATM.Credentials.ServiceCertificate.Authentication.CertificateValidationMode = System.ServiceModel.Security.X509CertificateValidationMode.Custom;
 				factoryATM.Credentials.ServiceCertificate.Authentication.CustomCertificateValidator = new ClientCertValidator();
 				factoryATM.Credentials.ServiceCertificate.Authentication.RevocationMode = X509RevocationMode.NoCheck;
 
 				factoryATM.Credentials.ClientCertificate.Certificate = CertManager.GetCertificateFromStorage(StoreName.My, StoreLocation.LocalMachine, clientCertCN);
-				
+
 				ATMProxy = factoryATM.CreateChannel();
 			}
 			catch (Exception e)

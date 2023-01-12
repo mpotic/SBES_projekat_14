@@ -79,6 +79,42 @@ namespace CustomLogger {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Service {0} failed to pay {1} to user {2}!.
+        /// </summary>
+        internal static string PaymentFailure {
+            get {
+                return ResourceManager.GetString("PaymentFailure", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Service {0} successfully payed {1} to user {2}!.
+        /// </summary>
+        internal static string PaymentSuccess {
+            get {
+                return ResourceManager.GetString("PaymentSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Service {0} failed to payout {1} to user {2}!.
+        /// </summary>
+        internal static string PayoutFailure {
+            get {
+                return ResourceManager.GetString("PayoutFailure", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Service {0} successfully payed out {1} to user {2}!.
+        /// </summary>
+        internal static string PayoutSuccess {
+            get {
+                return ResourceManager.GetString("PayoutSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Service {0} failed to change user {1} pin!.
         /// </summary>
         internal static string PinChangeFailure {

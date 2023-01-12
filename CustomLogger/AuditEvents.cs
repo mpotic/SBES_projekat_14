@@ -17,7 +17,11 @@ namespace CustomLogger
 		PinReplicationSuccess, 
 		PinReplicationFailure, 
 		PinChangeSuccess,
-		PinChangeFailure
+		PinChangeFailure,
+		PaymentSuccess,
+		PaymentFailure,
+		PayoutSuccess,
+		PayoutFailure
 	}
 
 	public class AuditEvents
@@ -102,6 +106,36 @@ namespace CustomLogger
 			get
 			{
 				return ResourceMgr.GetString(AuditEventTypes.PinChangeFailure.ToString());
+			}
+		}
+
+		public static string PaymentSuccess
+		{
+			get
+			{
+				return ResourceMgr.GetString(AuditEventTypes.PaymentSuccess.ToString());
+			}
+		}
+		public static string PaymentFailure
+		{
+			get
+			{
+				return ResourceMgr.GetString(AuditEventTypes.PaymentFailure.ToString());
+			}
+		}
+		public static string PayoutSuccess
+		{
+			get
+			{
+				return ResourceMgr.GetString(AuditEventTypes.PayoutSuccess.ToString());
+			}
+		}
+
+		public static string PayoutFailure
+		{
+			get
+			{
+				return ResourceMgr.GetString(AuditEventTypes.PayoutFailure.ToString());
 			}
 		}
 	}

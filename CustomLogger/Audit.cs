@@ -183,6 +183,82 @@ namespace CustomLogger
 			}
 		}
 
+		public static void PaymentSuccess(string service, double amount, string subjectName)
+		{
+			if (customLog != null)
+			{
+				try
+				{
+					string PaymentSuccess =
+						AuditEvents.PaymentSuccess;
+					string message = String.Format(PaymentSuccess, service, amount, subjectName);
+					customLog.WriteEntry(message);
+				}
+				catch (Exception e)
+				{
+					Console.WriteLine((string.Format("Error while trying to write event (eventid = {0}) to event log.",
+						(int)AuditEventTypes.PaymentSuccess)), "\nException", e.Message);
+				}
+			}
+		}
+
+		public static void PaymentFailure(string service, double amount, string subjectName)
+		{
+			if (customLog != null)
+			{
+				try
+				{
+					string PaymentFailure =
+						AuditEvents.PaymentFailure;
+					string message = String.Format(PaymentFailure, service, amount, subjectName);
+					customLog.WriteEntry(message, EventLogEntryType.Error);
+				}
+				catch (Exception e)
+				{
+					Console.WriteLine((string.Format("Error while trying to write event (eventid = {0}) to event log.",
+						(int)AuditEventTypes.PaymentFailure)), "\nException", e.Message);
+				}
+			}
+		}
+
+		public static void PayoutSuccess(string service, double amount, string subjectName)
+		{
+			if (customLog != null)
+			{
+				try
+				{
+					string PayoutSuccess =
+						AuditEvents.PayoutSuccess;
+					string message = String.Format(PayoutSuccess, service, amount, subjectName);
+					customLog.WriteEntry(message);
+				}
+				catch (Exception e)
+				{
+					Console.WriteLine((string.Format("Error while trying to write event (eventid = {0}) to event log.",
+						(int)AuditEventTypes.PayoutSuccess)), "\nException", e.Message);
+				}
+			}
+		}
+
+		public static void PayoutFailure(string service, double amount, string subjectName)
+		{
+			if (customLog != null)
+			{
+				try
+				{
+					string PayoutFailure =
+						AuditEvents.PayoutFailure;
+					string message = String.Format(PayoutFailure, service, amount, subjectName);
+					customLog.WriteEntry(message, EventLogEntryType.Error);
+				}
+				catch (Exception e)
+				{
+					Console.WriteLine((string.Format("Error while trying to write event (eventid = {0}) to event log.",
+						(int)AuditEventTypes.PayoutFailure)), "\nException", e.Message);
+				}
+			}
+		}
+
 
 		public void Dispose()
 		{

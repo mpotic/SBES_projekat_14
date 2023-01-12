@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 
 namespace SmartCardsService.Features
 {
-	internal enum ServiceTypeEnum { Primary = 0, Secondary };
-	internal class Replication
+	public enum ServiceTypeEnum { Primary = 0, Secondary };
+	public class Replication
 	{
 		private static ServiceTypeEnum serviceType;
 
-		internal static ServiceTypeEnum ServiceType { get => serviceType; set => serviceType = value; }
+		public static ServiceTypeEnum ServiceType { get => serviceType; set => serviceType = value; }
 
 		internal bool SetServiceType()
 		{

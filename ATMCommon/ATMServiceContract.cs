@@ -14,7 +14,7 @@ namespace ATMCommon
 		[OperationContract]
 		bool ValidateSmartCardPin(string message, byte[] clientSignature);
 		[OperationContract]
-		List<User> GetAllUsers();
+		Tuple<byte[], string> GetAllUsers(string message, byte[] clientSignature);
 		[OperationContract]
 		bool CheckPayment(string message, byte[] clientSignature);
 		[OperationContract]
