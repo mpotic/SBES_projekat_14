@@ -162,9 +162,9 @@ namespace SmartCardsService.Connections
 				ValidationServiceHost = new ServiceHost(typeof(ValidationService));
 
 				NetTcpBinding binding = new NetTcpBinding();
-				//binding.Security.Mode = SecurityMode.Transport;
-				//binding.Security.Transport.ClientCredentialType = TcpClientCredentialType.Windows;
-				//binding.Security.Transport.ProtectionLevel = System.Net.Security.ProtectionLevel.EncryptAndSign;
+				binding.Security.Mode = SecurityMode.Transport;
+				binding.Security.Transport.ClientCredentialType = TcpClientCredentialType.Windows;
+				binding.Security.Transport.ProtectionLevel = System.Net.Security.ProtectionLevel.EncryptAndSign;
 
 				ValidationServiceHost.AddServiceEndpoint(typeof(ValidationServiceContract),
 					binding, $"net.tcp://localhost:{ServicePort}/ValidationService");

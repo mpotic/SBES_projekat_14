@@ -6,6 +6,7 @@ using System.Security.Principal;
 using System.ServiceModel;
 using System.Text;
 using System.Threading.Tasks;
+using ATM.Connections;
 using ATMCommon;
 using CertificateManager;
 using CustomLogger;
@@ -18,8 +19,6 @@ namespace ATM.Services
 {
     internal class ATMService : ATMServiceContract
     {
-        private ValidationService ValidationService { get; set; } = new ValidationService();
-
         public Tuple<byte[], string> GetAllUsers(string message, byte[] clientSignature)
         {
             string clientCertCN = "test";
@@ -31,8 +30,7 @@ namespace ATM.Services
             if (role == "Manager")
             {
                 List<User> users = new List<User>();
-                users = ValidationService.GetAllUsers();
-
+                users = WCFManager.ValidationProxy.GetAllUsers();
                 //User test1 = new User("test1", "1234", "test1", "");
                 //users.Add(test1);
                 //User test2 = new User("test2", "1334", "test2", "");
@@ -74,7 +72,7 @@ namespace ATM.Services
                 return false;
             }
             string[] clientInfo = message.Split('+');
-            return ValidationService.ValidateSmartCardPin(new User(clientInfo[0], clientInfo[1], "", ""));
+            return WCFManager.ValidationProxy.ValidateSmartCardPin(new User(clientInfo[0], clientInfo[1], "", ""));
             //return true;
         }
         public bool CheckPayment(string amount, byte[] signature)
@@ -98,7 +96,7 @@ namespace ATM.Services
                 Audit.PaymentSuccess("ATMService/" + Replication.ServiceType.ToString(), Double.Parse(amountAndSubjectName[0]), clientCertCN);
                 //return true;
 
-                return ValidationService.ValidateDeposit(amountAndSubjectName[0], amountAndSubjectName[1]);
+                return WCFManager.ValidationProxy.ValidateDeposit(amountAndSubjectName[0], amountAndSubjectName[1]);
             }
             else
             {
@@ -127,7 +125,7 @@ namespace ATM.Services
                 string[] amountAndSubjectName = amount.Split('+');
                 Audit.PayoutSuccess("ATMService/" + Replication.ServiceType.ToString(), Double.Parse(amountAndSubjectName[0]), clientCertCN);
                 //return true;
-                return ValidationService.ValidatePayout(amountAndSubjectName[0], amountAndSubjectName[1]);
+                return WCFManager.ValidationProxy.ValidatePayout(amountAndSubjectName[0], amountAndSubjectName[1]);
             }
             else
             {

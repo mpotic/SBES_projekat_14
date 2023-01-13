@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace SCSCommon.Services
 {
-	public class ValidationService : ValidationServiceContract
+	internal class ValidationService : ValidationServiceContract
 	{
 		private UserManager UserManager { get; set; } = new UserManager();
 		private Validation Validation { get; set; } = new Validation();

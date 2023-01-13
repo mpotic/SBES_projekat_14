@@ -1,6 +1,7 @@
 ﻿using ATM.Services;
 using ATMCommon;
 using CertificateManager;
+using SCSCommon.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,9 +23,11 @@ namespace ATM.Connections
 		internal static int ServicePort { get => servicePort; set => servicePort = value; }
 		public static ServiceHost AtmServiceHost { get => atmServiceHost; set => atmServiceHost = value; }
 
+		static ChannelFactory<ValidationServiceContract> factoryValidation;
+		internal static ValidationServiceContract ValidationProxy { get; set; }
+
 		internal static bool OpenATMHost()
 		{
-
 			try
 			{
 				string atmCertCN = "atmservice";
@@ -55,6 +58,31 @@ namespace ATM.Connections
 			return true;
 		}
 
+		internal static bool CreateValidationServiceProxy(string connectionPort)
+		{
+			try
+			{
+				NetTcpBinding binding = new NetTcpBinding();
+				binding.Security.Mode = SecurityMode.Transport;
+				binding.Security.Transport.ClientCredentialType = TcpClientCredentialType.Windows;
+				binding.Security.Transport.ProtectionLevel = System.Net.Security.ProtectionLevel.EncryptAndSign;
+
+				binding.SendTimeout = new TimeSpan(0, 3, 0);
+
+				factoryValidation = new ChannelFactory<ValidationServiceContract>(binding,
+					new EndpointAddress($"net.tcp://localhost:{connectionPort}/ValidationService"));
+
+				ValidationProxy = factoryValidation.CreateChannel();
+			}
+			catch (Exception e)
+			{
+				Console.WriteLine("Error while creating a Validation Service communication channel: " + e.Message);
+				return false;
+			}
+
+			return true;
+		}
+
 		internal static bool CloseSCServiceHost()
 		{
 			try
@@ -65,6 +93,21 @@ namespace ATM.Connections
 			catch (Exception e)
 			{
 				Console.WriteLine("ERROR while trying to close ATM Service host: " + e.Message);
+				return false;
+			}
+
+			return true;
+		}
+
+		internal static bool CloseATMServiceProxy()
+		{
+			try
+			{
+				factoryValidation.Close();
+			}
+			catch (Exception e)
+			{
+				Console.WriteLine("Error while trying to close a Validation Service communication channel: " + e.Message);
 				return false;
 			}
 

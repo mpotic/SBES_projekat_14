@@ -13,8 +13,8 @@ namespace ATM
         {
 			WCFManager.ServicePort = 5002;
 			WCFManager.OpenATMHost();
-
-
+			string connectionPort = "5000";
+			WCFManager.CreateValidationServiceProxy(connectionPort);
 
 			ShutDown();
 
@@ -26,6 +26,7 @@ namespace ATM
 			Console.ReadKey();
 
 			WCFManager.CloseSCServiceHost();
+			WCFManager.CloseATMServiceProxy();
 		}
 	}
 }
