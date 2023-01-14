@@ -16,6 +16,7 @@ namespace SCSCommon.Services
 
  		public bool ValidateSmartCardPin(User user)
 		{
+			
 			return UserManager.CheckPinValidity(user);
 		}
 

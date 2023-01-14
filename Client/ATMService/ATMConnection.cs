@@ -36,8 +36,7 @@ namespace Client.ATMService
 
 				factoryATM = new ChannelFactory<ATMServiceContract>(binding, address);
 
-				string clientCertCN = "test";
-				//string clientCertCN = Formatter.ParseName(WindowsIdentity.GetCurrent().Name);
+				string clientCertCN = Formatter.ParseName(WindowsIdentity.GetCurrent().Name);
 
 				factoryATM.Credentials.ServiceCertificate.Authentication.CertificateValidationMode = System.ServiceModel.Security.X509CertificateValidationMode.Custom;
 				factoryATM.Credentials.ServiceCertificate.Authentication.CustomCertificateValidator = new ClientCertValidator();

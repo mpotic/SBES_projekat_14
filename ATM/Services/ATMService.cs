@@ -21,20 +21,18 @@ namespace ATM.Services
     {
         public Tuple<byte[], string> GetAllUsers(string message, byte[] clientSignature)
         {
-            string clientCertCN = "test";
-            //string clientCertCN = Formatter.ParseName(ServiceSecurityContext.Current.PrimaryIdentity.Name);
+            string clientCertCN = Formatter.ParseName(ServiceSecurityContext.Current.PrimaryIdentity.Name);
+            string[] certSubjectComma = clientCertCN.Split(',');
+            string[] certSubjectEquals = certSubjectComma[0].Split('=');
+            string clientName = certSubjectEquals[1];
 
-            string role = CertManager.GetOrganizationalUnit(StoreName.TrustedPeople, StoreLocation.LocalMachine, clientCertCN);
+            string role = CertManager.GetOrganizationalUnit(StoreName.TrustedPeople, StoreLocation.LocalMachine, clientName);
 
             string usersToString = "";
             if (role == "Manager")
             {
                 List<User> users = new List<User>();
                 users = WCFManager.ValidationProxy.GetAllUsers();
-                //User test1 = new User("test1", "1234", "test1", "");
-                //users.Add(test1);
-                //User test2 = new User("test2", "1334", "test2", "");
-                //users.Add(test2);
                 foreach (var user in users)
                 {
                     usersToString += user.SubjectName + "+" + user.OrganizationalUnit + ";";
@@ -47,8 +45,7 @@ namespace ATM.Services
                 return null;
             }
 
-            string serviceCertCN = "atmservice";
-            //string serviceCertCN = Formatter.ParseName(WindowsIdentity.GetCurrent().Name);
+            string serviceCertCN = Formatter.ParseName(WindowsIdentity.GetCurrent().Name);
 
             X509Certificate2 certificateSign = CertManager.GetCertificateFromStorage(StoreName.My, StoreLocation.LocalMachine, serviceCertCN);
             byte[] signature = DigitalSignature.Create(usersToString, HashAlgorithm.SHA1, certificateSign);
@@ -59,9 +56,11 @@ namespace ATM.Services
 
         public bool ValidateSmartCardPin(string message, byte[] clientSignature)
         {
-            //string clientCertCN = "test";
             string clientCertCN = Formatter.ParseName(ServiceSecurityContext.Current.PrimaryIdentity.Name);
-            X509Certificate2 clientCertificate = CertManager.GetCertificateFromStorage(StoreName.TrustedPeople, StoreLocation.LocalMachine, clientCertCN);
+            string[] certSubjectComma = clientCertCN.Split(',');
+            string[] certSubjectEquals = certSubjectComma[0].Split('=');
+            string clientName = certSubjectEquals[1];
+            X509Certificate2 clientCertificate = CertManager.GetCertificateFromStorage(StoreName.TrustedPeople, StoreLocation.LocalMachine, clientName);
             if (DigitalSignature.Verify(message, HashAlgorithm.SHA1, clientSignature, clientCertificate))
             {
                 Console.WriteLine("Sign is valid");
@@ -73,16 +72,17 @@ namespace ATM.Services
             }
             string[] clientInfo = message.Split('+');
             return WCFManager.ValidationProxy.ValidateSmartCardPin(new User(clientInfo[0], clientInfo[1], "", ""));
-            //return true;
         }
         public bool CheckPayment(string amount, byte[] signature)
         {
-            //string clientCertCN = "test";
             string clientCertCN = Formatter.ParseName(ServiceSecurityContext.Current.PrimaryIdentity.Name);
-            string role = CertManager.GetOrganizationalUnit(StoreName.TrustedPeople, StoreLocation.LocalMachine, clientCertCN);
+            string[] certSubjectComma = clientCertCN.Split(',');
+            string[] certSubjectEquals = certSubjectComma[0].Split('=');
+            string clientName = certSubjectEquals[1];
+            string role = CertManager.GetOrganizationalUnit(StoreName.TrustedPeople, StoreLocation.LocalMachine, clientName);
             if (role == "SmartCardUser" || role == "Manager")
             {
-                X509Certificate2 clientCertificate = CertManager.GetCertificateFromStorage(StoreName.TrustedPeople, StoreLocation.LocalMachine, clientCertCN);
+                X509Certificate2 clientCertificate = CertManager.GetCertificateFromStorage(StoreName.TrustedPeople, StoreLocation.LocalMachine, clientName);
                 if (DigitalSignature.Verify(amount, HashAlgorithm.SHA1, signature, clientCertificate))
                 {
                     Console.WriteLine("Sign is valid");
@@ -93,26 +93,28 @@ namespace ATM.Services
                     return false;
                 }
                 string[] amountAndSubjectName = amount.Split('+');
-                Audit.PaymentSuccess("ATMService/" + Replication.ServiceType.ToString(), Double.Parse(amountAndSubjectName[0]), clientCertCN);
-                //return true;
+                Audit.PaymentSuccess("ATMService/" + Replication.ServiceType.ToString(), Double.Parse(amountAndSubjectName[0]), clientName);
+
 
                 return WCFManager.ValidationProxy.ValidateDeposit(amountAndSubjectName[0], amountAndSubjectName[1]);
             }
             else
             {
-                Audit.PaymentFailure("ATMService/" + Replication.ServiceType.ToString(), Double.Parse(amount), clientCertCN);
+                Audit.PaymentFailure("ATMService/" + Replication.ServiceType.ToString(), Double.Parse(amount), clientName);
                 return false;
             }
         }
 
         public bool CheckPayout(string amount, byte[] signature)
         {
-            //string clientCertCN = "test";
             string clientCertCN = Formatter.ParseName(ServiceSecurityContext.Current.PrimaryIdentity.Name);
-            string role = CertManager.GetOrganizationalUnit(StoreName.TrustedPeople, StoreLocation.LocalMachine, clientCertCN);
+            string[] certSubjectComma = clientCertCN.Split(',');
+            string[] certSubjectEquals = certSubjectComma[0].Split('=');
+            string clientName = certSubjectEquals[1];
+            string role = CertManager.GetOrganizationalUnit(StoreName.TrustedPeople, StoreLocation.LocalMachine, clientName);
             if (role == "SmartCardUser" || role == "Manager")
             {
-                X509Certificate2 clientCertificate = CertManager.GetCertificateFromStorage(StoreName.TrustedPeople, StoreLocation.LocalMachine, clientCertCN);
+                X509Certificate2 clientCertificate = CertManager.GetCertificateFromStorage(StoreName.TrustedPeople, StoreLocation.LocalMachine, clientName);
                 if (DigitalSignature.Verify(amount, HashAlgorithm.SHA1, signature, clientCertificate))
                 {
                     Console.WriteLine("Sign is valid");
@@ -123,13 +125,13 @@ namespace ATM.Services
                     return false;
                 }
                 string[] amountAndSubjectName = amount.Split('+');
-                Audit.PayoutSuccess("ATMService/" + Replication.ServiceType.ToString(), Double.Parse(amountAndSubjectName[0]), clientCertCN);
-                //return true;
+                Audit.PayoutSuccess("ATMService/" + Replication.ServiceType.ToString(), Double.Parse(amountAndSubjectName[0]), clientName);
+
                 return WCFManager.ValidationProxy.ValidatePayout(amountAndSubjectName[0], amountAndSubjectName[1]);
             }
             else
             {
-                Audit.PayoutFailure("ATMService/" + Replication.ServiceType.ToString(), Double.Parse(amount), clientCertCN);
+                Audit.PayoutFailure("ATMService/" + Replication.ServiceType.ToString(), Double.Parse(amount), clientName);
                 return false;
             }
         }

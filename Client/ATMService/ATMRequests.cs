@@ -34,7 +34,6 @@ namespace Client.ATMService
 			}
 			string message = subjectName + "+" + pin;
 
-			//string clientCertCN = "test";
 			string clientCertCN = Formatter.ParseName(WindowsIdentity.GetCurrent().Name);
 			X509Certificate2 certificateSign = CertManager.GetCertificateFromStorage(StoreName.My, StoreLocation.LocalMachine, clientCertCN);
 			byte[] signature = DigitalSignature.Create(message, HashAlgorithm.SHA1, certificateSign);
@@ -55,7 +54,7 @@ namespace Client.ATMService
 				Console.WriteLine("Enter valid number!");
 				return false;
 			}
-			//string clientCertCN = "test";
+
 			string clientCertCN = Formatter.ParseName(WindowsIdentity.GetCurrent().Name);
 			string message = amount + "+" + clientCertCN;
 			X509Certificate2 certificateSign = CertManager.GetCertificateFromStorage(StoreName.My, StoreLocation.LocalMachine, clientCertCN);
@@ -74,7 +73,7 @@ namespace Client.ATMService
 				Console.WriteLine("Enter valid number!");
 				return false;
 			}
-			//string clientCertCN = "test";
+
 			string clientCertCN = Formatter.ParseName(WindowsIdentity.GetCurrent().Name);
 			string message = amount + "+" + clientCertCN;
 			X509Certificate2 certificateSign = CertManager.GetCertificateFromStorage(StoreName.My, StoreLocation.LocalMachine, clientCertCN);
@@ -88,7 +87,6 @@ namespace Client.ATMService
 			Console.WriteLine("Trying to get all users...");
 			Tuple<byte[], string> tuple;
 
-			//string clientCertCN = "test";
 			string clientCertCN = Formatter.ParseName(WindowsIdentity.GetCurrent().Name);
 			X509Certificate2 certificateSign = CertManager.GetCertificateFromStorage(StoreName.My, StoreLocation.LocalMachine, clientCertCN);
 			byte[] signatureClient = DigitalSignature.Create(clientCertCN, HashAlgorithm.SHA1, certificateSign);
@@ -101,9 +99,11 @@ namespace Client.ATMService
 			byte[] signature = tuple.Item1;
 			string users = tuple.Item2;
 
-			//string serviceCertCN = "atmservice";
 			string serviceCertCN = Formatter.ParseName(ServiceSecurityContext.Current.PrimaryIdentity.Name);
-			X509Certificate2 serviceCertificate = CertManager.GetCertificateFromStorage(StoreName.TrustedPeople, StoreLocation.LocalMachine, serviceCertCN);
+			string[] certSubjectComma = serviceCertCN.Split(',');
+			string[] certSubjectEquals = certSubjectComma[0].Split('=');
+			string serviceName = certSubjectEquals[1];
+			X509Certificate2 serviceCertificate = CertManager.GetCertificateFromStorage(StoreName.TrustedPeople, StoreLocation.LocalMachine, serviceName);
 			if (DigitalSignature.Verify(users, HashAlgorithm.SHA1, signature, serviceCertificate))
 			{
 				Console.WriteLine("Sign is valid");
