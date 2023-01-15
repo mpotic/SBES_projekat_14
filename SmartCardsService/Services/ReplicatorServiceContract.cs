@@ -16,5 +16,11 @@ namespace SmartCardsService.Services
 
 		[OperationContract]
 		bool ReplicateUserUpdatePin(User user);
+		[OperationContract]
+		bool ReplicateValidatePayout(string stringAmount, string subjectName);
+
+		[OperationContract]
+		bool ReplicateValidateDeposit(string stringAmount, string subjectName);
+
 	}
 }

@@ -29,16 +29,16 @@ namespace SmartCardsService.Services
 
 			//Make exchange certificates
 			Console.WriteLine("\n----------------------- M A K E - C E R T I F I C A T E S -----------------------");
-			Certificates.GenerateCertificate(user.SubjectName, user.OrganizationalUnit, user.SubjectName + "_exchange", false);
+			Certificates.GenerateCertificate(user.SubjectName, user.OrganizationalUnit, user.SubjectName, false);
 			Console.WriteLine("Repeat the password:");
 			string password = Console.ReadLine().Trim();
-			Certificates.GeneratePFX(user.SubjectName + "_exchange", password);
+			Certificates.GeneratePFX(user.SubjectName, password);
 
-			//Make sign certificates
-			Certificates.GenerateCertificate(user.SubjectName, user.OrganizationalUnit, user.SubjectName + "_signature", false);
-			Console.WriteLine("Repeat the password:");
-			password = Console.ReadLine().Trim();
-			Certificates.GeneratePFX(user.SubjectName + "_signature", password);
+			////Make sign certificates
+			//Certificates.GenerateCertificate(user.SubjectName, user.OrganizationalUnit, user.SubjectName + "_signature", false);
+			//Console.WriteLine("Repeat the password:");
+			//password = Console.ReadLine().Trim();
+			//Certificates.GeneratePFX(user.SubjectName + "_signature", password);
 			Console.WriteLine("---------------------------------------------------------------------------------\n");
 
 			return true;

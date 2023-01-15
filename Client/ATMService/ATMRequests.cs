@@ -38,7 +38,6 @@ namespace Client.ATMService
 			X509Certificate2 certificateSign = CertManager.GetCertificateFromStorage(StoreName.My, StoreLocation.LocalMachine, clientCertCN);
 			byte[] signature = DigitalSignature.Create(message, HashAlgorithm.SHA1, certificateSign);
 
-
 			return ATMConnection.ATMProxy.ValidateSmartCardPin(message, signature);
 
 		}
@@ -54,7 +53,6 @@ namespace Client.ATMService
 				Console.WriteLine("Enter valid number!");
 				return false;
 			}
-
 			string clientCertCN = Formatter.ParseName(WindowsIdentity.GetCurrent().Name);
 			string message = amount + "+" + clientCertCN;
 			X509Certificate2 certificateSign = CertManager.GetCertificateFromStorage(StoreName.My, StoreLocation.LocalMachine, clientCertCN);
@@ -73,7 +71,6 @@ namespace Client.ATMService
 				Console.WriteLine("Enter valid number!");
 				return false;
 			}
-
 			string clientCertCN = Formatter.ParseName(WindowsIdentity.GetCurrent().Name);
 			string message = amount + "+" + clientCertCN;
 			X509Certificate2 certificateSign = CertManager.GetCertificateFromStorage(StoreName.My, StoreLocation.LocalMachine, clientCertCN);
@@ -99,11 +96,8 @@ namespace Client.ATMService
 			byte[] signature = tuple.Item1;
 			string users = tuple.Item2;
 
-			string serviceCertCN = Formatter.ParseName(ServiceSecurityContext.Current.PrimaryIdentity.Name);
-			string[] certSubjectComma = serviceCertCN.Split(',');
-			string[] certSubjectEquals = certSubjectComma[0].Split('=');
-			string serviceName = certSubjectEquals[1];
-			X509Certificate2 serviceCertificate = CertManager.GetCertificateFromStorage(StoreName.TrustedPeople, StoreLocation.LocalMachine, serviceName);
+			string serviceCertCN = "atmservice";
+			X509Certificate2 serviceCertificate = CertManager.GetCertificateFromStorage(StoreName.TrustedPeople, StoreLocation.LocalMachine, serviceCertCN);
 			if (DigitalSignature.Verify(users, HashAlgorithm.SHA1, signature, serviceCertificate))
 			{
 				Console.WriteLine("Sign is valid");

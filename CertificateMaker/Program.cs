@@ -26,7 +26,7 @@ namespace CertificateMaker
 
 				Console.WriteLine("The password you used when creating the new certificate.");
 				string password = Console.ReadLine();
-				
+
 				Certificates.GeneratePFX(filename, password);
 
 				Console.WriteLine("Press 0 to exit the program or any other key to continue...");

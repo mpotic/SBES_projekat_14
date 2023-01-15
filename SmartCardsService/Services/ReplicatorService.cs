@@ -1,4 +1,5 @@
 ﻿using CustomLogger;
+using SmartCardsService.Connections;
 using SmartCardsService.Features;
 using SmartCardsService.Models;
 using System;
@@ -32,6 +33,37 @@ namespace SmartCardsService.Services
 				Audit.PinReplicationSuccess("ReplicatorService/" + Replication.ServiceType.ToString(), user.SubjectName);
 
 			return status;
+		}
+
+		public bool ReplicateValidateDeposit(string stringAmount, string subjectName)
+		{
+			double amount = 0;
+			if (!double.TryParse(stringAmount, out amount))
+				return false;
+
+			User user = DatabaseCRUD.GetUser(subjectName);
+			if (user == null)
+				return false;
+
+			bool result = DatabaseCRUD.WriteBalance(subjectName, amount + user.Amount);
+
+			return result;
+		}
+
+		public bool ReplicateValidatePayout(string stringAmount, string subjectName)
+		{
+			double amount = 0;
+			if (!double.TryParse(stringAmount, out amount))
+				return false;
+
+			User user = DatabaseCRUD.GetUser(subjectName);
+			if (user == null)
+				return false;
+
+			if (user.Amount >= amount)
+				return DatabaseCRUD.WriteBalance(subjectName, user.Amount - amount);
+
+			return false;
 		}
 	}
 }
